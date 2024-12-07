@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown </title>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+      <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
+    <style>
+        @font-face {
+            font-family: "NRT";
+            src: url("NRT.ttf");
+        }
+          /* Spotlight effect */
+  .spotlight-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .spotlight {
+    position: absolute;
+    width: 150px; /* Spotlight size */
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(216, 218, 223) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: 999999;
+    pointer-events: none;
+    mix-blend-mode: soft-light; /* Makes the spotlight blend naturally */
+  }
+            .audio-player {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background-color: transparent;
+        padding: 10px 20px;
+        border-radius: 10px;
+        max-width: 300px;
+        margin: 20px auto;
+        color: #fff;
+    }
+
+    #playPauseBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+    }
+
+    #progressBar {
+        width: 100px;
+        cursor: pointer;
+        background: #444;
+    }
+
+    #progressBar::-webkit-slider-thumb {
+        appearance: none;
+        background-color: #4CAF50;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+    }
+        body, html {
+            margin: 0;
+            font-size: 1.4rem;
+            text-align: right;
+            direction: rtl;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: rgb(186, 193, 204);
+            cursor: none;
+            font-family: "NRT" , 'Courier New', Courier, monospace;
+        }
+        #tsparticles { position: absolute; width: 100%; height: 100%; z-index: -1; }
+        .container {
+            position: relative;
+            z-index: 1;
+            margin-top: 50px;
+        }
+        .moon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            animation: pulse 10s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            10% { transform: translate(-50%, -50%) scale(1.1); }
+            20% { transform: translate(-50%, -50%) scale(1.2); }
+            40% { transform: translate(-50%, -50%) scale(1.3); }
+            60% { transform: translate(-50%, -50%) scale(1.4); }
+            80% { transform: translate(-50%, -50%) scale(1.6); }
+            100% { transform: translate(-50%, -50%) scale(1.8); }
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            background-color: transparent;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-top: 10px;
+            outline: none;
+        }
+        input[type="text"]::placeholder {
+            color: #aaa;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: transparent;
+            color: white;
+            border: none;
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #777;
+        }
+        .countdown {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+            /* Modal Styles */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    }
+    
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #222;
+        padding: 20px;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 10px;
+        text-align: center;
+        color: #fff;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 24px;
+        color: #fff;
+        cursor: pointer;
+    }
+        h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      animation: fadeInDown 2s ease;
+    }
+    .btn {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+    .btn-success:hover {
+      background-color: #28a745;
+      transform: scale(1.1);
+    }
+    .btn-danger:hover {
+      background-color: #dc3545;
+      transform: scale(1.1);
+    }
+    img {
+      max-width: 30%;
+      max-height: 30%;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 2s ease-in-out;
+    }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    </style>
+</head>
+<body>
+<div id="tsparticles"></div>
+  <!-- Add this to wrap the background -->
+  <div class="spotlight" id="spotlight"></div>
+<!-- Particle Background -->
+<!-- Phased Moon Element -->
+<div class="moon"></div>
+
+<audio src="./audio/final.mp3" autoplay controls hidden></audio>
+<div class="container" style="width: 1100px; margin: auto;">
+    <p style="line-height: 2;">
+ئەڵێن ئافرەت پێویستی بە پیاوێکە کاتێک دڵتەنگ دەبێت ببێتە هاوڕێی.  
+ لە کاتی پێویستیدا، عاشقێک، لە کاتی ئامۆژگاریدا، وەک برایەک، لە کاتی ناڕەحەتیدا، وەک باوکێک، پیاوێک بۆ ئەو، نەک دژی ئەو.  
+ پیاوێک کە لێی ڕابکەیت، پیاوێک کە لێی بشاریتەوە، پیاوێک کە بە بوونی دڵخۆش دەبیت و نەبوونی هەست بە دڵتەنگی دەکەیت 
+ پیاوێک کە ئەگەر توڕە بێت نەیترسێنێت، بەڵکو وای لێدەکات هەست بە سەلامەتی بکات تەنانەت لە تووڕەترین ساتەکانیشدا ژنێک پێویستی پێیەتی 
+ پیاو تەواوکەری نیوەکەی تری بێت، نەک نێرێک کە نیوەکەی بشکێنێت،،،،
+ ژن ئۆکسجینی ژیان و میوەی دونیایە و زەردەخەنەی ئەو خۆری بەیانییە کە دەدرەوشێتەوە، گەردوونیش لەگەڵ ڕووناکی خۆیدایە
+ ژن شەوی بێ مانگە، وەک ڕۆژێک بێ خۆر، بەهارێک بێ گوڵ ، گوڵ بێ بۆن و وەک هەوا بێ ئۆکسجین. 
+ ژن بەهەموو ماناکانیەوە شیعری خۆشەویستین، و بەهەموو وشە و ئاوازەکانیانەوە گۆرانی خۆشەویستین ژیان ژنە، و ژیان لە زماندا بە هەموو زمانەکانی گەردوون مێینەیە.  
+ ئافرەت هەرچەند بەهێز بێت ناتوانێت بەتەنها جانتای ژیان هەڵبگرێت هەمیشە پێویستی بە کەسێکە شتێک لە ڕۆژگاری خۆی بۆ هەڵبگرێت 
+ ڕۆحێک کە ڕۆحێکی تر نازی نەکات، نەخۆش دەکەوێت
+ ئەو ڕۆحەی کە گرنگی بە ڕۆحێکی تر نادات و خۆشی نەوێت وشک دەبێتەوە و لەگەڵ گەورەبوونی تەمەنیدا منداڵی و بێتاوانییەکەی زیاتر دەبێت، بۆیە پێویستمان بە زیاتر و زیاترە.
+شەیدا بهێڵە من ببمە ئەو پیاوە مەهێڵە ئەم خۆشەویستیەم بۆتۆ بمرێت ئەو هیواو ئاواتەی کە بۆم دروست بووە با نەمرێت , تۆ ئەو گوڵەی تازە خونچەی کردووە منیش ئەو بولبولەم
+ کە تازە فێر خوێندن  بووم بهێڵە هەموو رۆژێک بێم و لەدەورت گەرێم هەزار گۆرانی و ئاواز بۆ ئەو جوانیەت بخوێنم بۆ ئەوەی هەمیشە لەناو گوڵاندا بگەشێتەوە .
+شەیدا گیان من نازانم تۆ تا ئێستا چۆن بیرت لە من کردووەتەوە بەڵام شەیدا سوێن بەوخوایە گەر تۆم نەویستایە تا ئەم شوێنە نە ئەهاتمم بەدواتا ئەڵێن  گریان جوانترین هەستە کاتێک بیری کەسێک ئەکەیت دوعاکردن باوەشکردن بە وێنەی کەسێک کە خۆشت ئەوێ هەموویم بینی ، ئێستاش ئەو رۆژەم بیرناچێت رێک ئەو رۆژەبوو کە بەحساب یەکەم رۆژی وەرگرتنی رۆبەکە بوو شەوەکەی زۆر دڵم تەنگ بوو خەوتیشم کاتی نوێژ خەبەرم بووەوە بانگی ئەیا ئیتر وتم با نوێژەکەم کەم جا بخەومەوە نوێژم کردوو دەستم کردە دووعاکردن کە ناو تۆم هێنا وەک مناڵێک تێر تێر گریام ئەپارامەوە خوایە گیان من نازانم ئەو چیەکات چۆنە ئاگات لێی بێ خوایە گەر خێری تیایە بیهێنەوە رێم بیکە نسیبم ئەگریام لەپر دەرگا کرایەوە نەمزانی فرمێسک بسرم بەرماڵ هەڵگرم بەزەیم بەخۆم ئەهاتەوە بەس ئەو گریانە دڵی پاکردمەوە بۆ سانیەیەکیش بێت لە مێشکم دەر ناچی هەموو ئەو خەیاڵ و هیوا بچوکانەی کە من دروستم کردبوو لەگەڵ تۆ لە مێشکی خۆما ئەموت لەگەڵی  خانوویەک ئەکەین بە ماڵ من لە ئیش دێمەوە شەوێک سەیری فیلم ئەکەین جا ئەو فیلمانەی کە حەزمان لێیە هاری پۆتەر فیلمەکانی مارڤێڵ فیلمی تازە بێت ئەچین بۆ سینەما ، شەوێک من خواردنی بۆ حازر ئەکەم ئەوانەی حەزی لێیە من شلەو شت نازانم بەس ئەموت مەعکەرۆنی پاستا یا پیتزای بۆ دروست ئەکەم و پێکەوە لەسەر یەک سفرە ئەیخۆین ، لە رۆژە پشوەکانا ئەرۆین بۆ گەڕان ، بیرتە پێم وتی ئەگەر شوو بکەن پشیلەکە لای کامتان ئەمێنێتەوە ئەوکاتە خەیاڵەکانم دروست بوبو ئەمویست هەرمێ لای ئێمە بێت 😅سەیری دڵی مناڵم کە  . شەیدا بەخوا زۆرم خۆش ئەوێت و زۆریش لەلام گرنگی من نامەوێت کەسێکی وەک تۆ کە هەتە ژیانم و ناسیم لەدەستم بروا تۆش من دەرمەکە لە ژیانت خۆت ئەزانی دانیشتووی لەگەڵم لەسەر هەمان مێز تەسەرفت لەگەڵم کردووە ئەزانی چۆن کەسێکم راستە لەوانەیە تۆزێ زانستم خۆش بوێت بەس کەسێکی وشکیش نیم بەجدی کاتێ لەگەڵ تۆ قسەم ئەکرد زۆر دڵخۆش بووم زۆر ئاسوودە بووم دەمێکە ئەو هەستەم رۆییوە ئێستا هەمان کەس نیم بەڵام هێشتا تۆم خۆش ئەوێت من کەسێک بووم راستت پێ بڵێم بە ناز گەورە بووم بەڵام وردە وردە نەما بەڵام کە تۆم ناسی هەستی بەرپرسیاریم بۆ دروست بوو وام لێ هات کە کەسێکم لە خۆم زیاتر خۆشبوێت دەستم کردە ئیشکردن کە سپاس بۆ خوا ئێستا هەم بۆخۆم ئیش ئەکەم هەم لە کۆمپانیایەکیش بەجدی خۆشەویستی هەموو شتێک ئەگۆرێت راستە تۆ ئەو هەستەت بە من نەدا بەڵام بێ ئەوەی قسە بکەیت وات لێکردم کە ببمە پیاو راستە هەڵەم هەبووە بەڵام لە کۆتاییا هەموومان مرۆڤین و شایەنی ئەوەین هەڵە بکەین کەسمان کامڵ نین گەر کامڵ بوینایە بەدوای کەسی تر نە ئەگەراین ئیتر ، شەیدا گیان من هەموو بونی خۆم کۆ کردووەتەوە و هاتوومە سەر رێت ئەگەر بروا و متمانەت بە منە کە من ئەبمە پیاوێک هەتا تەمەنت هەیە شانازیم پێوە بکەیت با ناوی خوای لێ بێنین و بهێڵە بێمە پێشەوە لەگەڵ ماڵەوەمان و داوات بکەم لە دایک و باوکت ئێمەی پیاو ئەوەی لە ئافرەتێکمان ئەوێ تەنیا ئەوەیە لە کاتە سەختەکان لە پشتمان بێت و بروای پێمان بێت ئیتر دوا بریار لای تۆیە و منیش چاوەڕێی تۆ ئەکەم .
+</p>
+<p>سوێن بێت ببمە باشترین هاوسەر بۆت و تۆش ببیتە جوانترین بووک کە تا ئێستا لەسەر ئەم زەویە بوبێت</p>
+</div>
+ </div>
+   <div class="container">
+    <h1>کلیک لە وێنەکە بکە</h1>
+    <div class="d-flex">
+    <img src="images/one.jpg" id="triggerImage" alt="Special Moment">
+    </div>
+  </div>
+  <!-- Modal -->
+<div class="modal" id="videoModal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <!-- Plyr Video Player -->
+        <video id="player" playsinline controls>
+            <source src="./Birthday/js/sh.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
+<script>
+let fireworks = [];
+
+
+
+document.addEventListener("mousemove", (event) => {
+  const spotlight = document.getElementById("spotlight");
+  const x = event.clientX;
+  const y = event.clientY;
+
+  // Position the spotlight at the cursor location
+  spotlight.style.left = `${x - spotlight.offsetWidth / 2}px`;
+  spotlight.style.top = `${y - spotlight.offsetHeight / 2}px`;
+});
+    tsParticles.load("tsparticles", {
+        background: { color: { value: "#000000FF" } },
+        particles: {
+            number: { value: 30, density: { enable: true, area: 800 } },
+            color: { value: ["#ffffff", "#d3d3d3", "#EE254AFF", "#ffe7ba",, "#1460ECFF",, "#CB1BCBFF"] },
+            shape: { type: "star" },
+            opacity: {
+                value: 1,
+                random: true,
+                animation: {
+                    enable: true,
+                    speed: 0.8,
+                    minimumValue: 0.2,
+                    sync: false
+                }
+            },
+            size: {
+                value: { min: 0.5, max: 5 },
+                random: true,
+                animation: {
+                    enable: true,
+                    speed: 2,
+                    minimumValue: 0.1,
+                    sync: false
+                }
+            },
+            move: {
+                enable: true,
+                speed: 0.7,
+                direction: "none",
+                random: true,
+                straight: false,
+                outModes: { default: "out" }
+            },
+            twinkle: {
+                particles: {
+                    enable: true,
+                    frequency: 0.9,
+                    opacity: 0.8
+                }
+            }
+        },
+        interactivity: {
+            events: {
+                onHover: { enable: true, mode: "repulse" },
+                onClick: { enable: true, mode: "push" }
+            },
+            modes: {
+                repulse: { distance: 100, duration: 0.4 },
+                push: { quantity: 4 }
+            }
+        },
+        detectRetina: true
+    });
+</script>
+<script>
+    // Initialize Plyr
+    const player = new Plyr('#player');
+
+    // Get modal elements
+    const modal = document.getElementById('videoModal');
+    const triggerImage = document.getElementById('triggerImage');
+    const closeModal = document.getElementById('closeModal');
+
+    // Show modal on image click
+    triggerImage.addEventListener('click', () => {
+        modal.style.display = 'block';
+        player.play(); // Start video playback
+    });
+
+    // Close modal
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+        player.pause(); // Pause video playback
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            player.pause(); // Pause video playback
+        }
+    });
+</script>
+</body>
+</html>
