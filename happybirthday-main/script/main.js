@@ -291,6 +291,6 @@ const animationTimeline = () => {
   // Restart Animation on click
   const replyBtn = document.getElementById("replay");
   replyBtn.addEventListener("click", () => {
-    window.location = "../../index2.html";
+    window.location = "../../last-hope/index2.html";
   });
 };
