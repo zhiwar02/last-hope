@@ -77,7 +77,6 @@
             font-family: Arial, sans-serif;
             text-align: center;
             color: rgb(186, 193, 204);
-            cursor: none;
             font-family: "NRT" , 'Courier New', Courier, monospace;
         }
         #tsparticles { position: absolute; width: 100%; height: 100%; z-index: -1; }
@@ -195,8 +194,8 @@
       transform: scale(1.1);
     }
     img {
-      max-width: 30%;
-      max-height: 30%;
+      max-width: 50%;
+      max-height: 100%;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       animation: fadeIn 2s ease-in-out;
@@ -219,6 +218,59 @@
         opacity: 1;
       }
     }
+
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+}
+
+.play-pause {
+    font-size: 20px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.play-pause:hover {
+    transform: scale(1.1);
+    background: #45a049;
+}
+
+.progress-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.progress-bar-wrapper {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress {
+    width: 0;
+    height: 100%;
+    background: #4caf50;
+    border-radius: 3px;
+    transition: width 0.2s ease-in-out;
+}
+
     </style>
 </head>
 <body>
@@ -230,42 +282,46 @@
 <div class="moon"></div>
 
 <audio src="./audio/final.mp3" autoplay controls hidden></audio>
-<div class="container" style="width: 1100px; margin: auto;">
-    <p style="line-height: 2;">
-ئەڵێن ئافرەت پێویستی بە پیاوێکە کاتێک دڵتەنگ دەبێت ببێتە هاوڕێی.  
- لە کاتی پێویستیدا، عاشقێک، لە کاتی ئامۆژگاریدا، وەک برایەک، لە کاتی ناڕەحەتیدا، وەک باوکێک، پیاوێک بۆ ئەو، نەک دژی ئەو.  
- پیاوێک کە لێی ڕابکەیت، پیاوێک کە لێی بشاریتەوە، پیاوێک کە بە بوونی دڵخۆش دەبیت و نەبوونی هەست بە دڵتەنگی دەکەیت 
- پیاوێک کە ئەگەر توڕە بێت نەیترسێنێت، بەڵکو وای لێدەکات هەست بە سەلامەتی بکات تەنانەت لە تووڕەترین ساتەکانیشدا ژنێک پێویستی پێیەتی 
- پیاو تەواوکەری نیوەکەی تری بێت، نەک نێرێک کە نیوەکەی بشکێنێت،،،،
- ژن ئۆکسجینی ژیان و میوەی دونیایە و زەردەخەنەی ئەو خۆری بەیانییە کە دەدرەوشێتەوە، گەردوونیش لەگەڵ ڕووناکی خۆیدایە
- ژن شەوی بێ مانگە، وەک ڕۆژێک بێ خۆر، بەهارێک بێ گوڵ ، گوڵ بێ بۆن و وەک هەوا بێ ئۆکسجین. 
- ژن بەهەموو ماناکانیەوە شیعری خۆشەویستین، و بەهەموو وشە و ئاوازەکانیانەوە گۆرانی خۆشەویستین ژیان ژنە، و ژیان لە زماندا بە هەموو زمانەکانی گەردوون مێینەیە.  
- ئافرەت هەرچەند بەهێز بێت ناتوانێت بەتەنها جانتای ژیان هەڵبگرێت هەمیشە پێویستی بە کەسێکە شتێک لە ڕۆژگاری خۆی بۆ هەڵبگرێت 
- ڕۆحێک کە ڕۆحێکی تر نازی نەکات، نەخۆش دەکەوێت
- ئەو ڕۆحەی کە گرنگی بە ڕۆحێکی تر نادات و خۆشی نەوێت وشک دەبێتەوە و لەگەڵ گەورەبوونی تەمەنیدا منداڵی و بێتاوانییەکەی زیاتر دەبێت، بۆیە پێویستمان بە زیاتر و زیاترە.
-شەیدا بهێڵە من ببمە ئەو پیاوە مەهێڵە ئەم خۆشەویستیەم بۆتۆ بمرێت ئەو هیواو ئاواتەی کە بۆم دروست بووە با نەمرێت , تۆ ئەو گوڵەی تازە خونچەی کردووە منیش ئەو بولبولەم
- کە تازە فێر خوێندن  بووم بهێڵە هەموو رۆژێک بێم و لەدەورت گەرێم هەزار گۆرانی و ئاواز بۆ ئەو جوانیەت بخوێنم بۆ ئەوەی هەمیشە لەناو گوڵاندا بگەشێتەوە .
-شەیدا گیان من نازانم تۆ تا ئێستا چۆن بیرت لە من کردووەتەوە بەڵام شەیدا سوێن بەوخوایە گەر تۆم نەویستایە تا ئەم شوێنە نە ئەهاتمم بەدواتا ئەڵێن  گریان جوانترین هەستە کاتێک بیری کەسێک ئەکەیت دوعاکردن باوەشکردن بە وێنەی کەسێک کە خۆشت ئەوێ هەموویم بینی ، ئێستاش ئەو رۆژەم بیرناچێت رێک ئەو رۆژەبوو کە بەحساب یەکەم رۆژی وەرگرتنی رۆبەکە بوو شەوەکەی زۆر دڵم تەنگ بوو خەوتیشم کاتی نوێژ خەبەرم بووەوە بانگی ئەیا ئیتر وتم با نوێژەکەم کەم جا بخەومەوە نوێژم کردوو دەستم کردە دووعاکردن کە ناو تۆم هێنا وەک مناڵێک تێر تێر گریام ئەپارامەوە خوایە گیان من نازانم ئەو چیەکات چۆنە ئاگات لێی بێ خوایە گەر خێری تیایە بیهێنەوە رێم بیکە نسیبم ئەگریام لەپر دەرگا کرایەوە نەمزانی فرمێسک بسرم بەرماڵ هەڵگرم بەزەیم بەخۆم ئەهاتەوە بەس ئەو گریانە دڵی پاکردمەوە بۆ سانیەیەکیش بێت لە مێشکم دەر ناچی هەموو ئەو خەیاڵ و هیوا بچوکانەی کە من دروستم کردبوو لەگەڵ تۆ لە مێشکی خۆما ئەموت لەگەڵی  خانوویەک ئەکەین بە ماڵ من لە ئیش دێمەوە شەوێک سەیری فیلم ئەکەین جا ئەو فیلمانەی کە حەزمان لێیە هاری پۆتەر فیلمەکانی مارڤێڵ فیلمی تازە بێت ئەچین بۆ سینەما ، شەوێک من خواردنی بۆ حازر ئەکەم ئەوانەی حەزی لێیە من شلەو شت نازانم بەس ئەموت مەعکەرۆنی پاستا یا پیتزای بۆ دروست ئەکەم و پێکەوە لەسەر یەک سفرە ئەیخۆین ، لە رۆژە پشوەکانا ئەرۆین بۆ گەڕان ، بیرتە پێم وتی ئەگەر شوو بکەن پشیلەکە لای کامتان ئەمێنێتەوە ئەوکاتە خەیاڵەکانم دروست بوبو ئەمویست هەرمێ لای ئێمە بێت 😅سەیری دڵی مناڵم کە  . شەیدا بەخوا زۆرم خۆش ئەوێت و زۆریش لەلام گرنگی من نامەوێت کەسێکی وەک تۆ کە هەتە ژیانم و ناسیم لەدەستم بروا تۆش من دەرمەکە لە ژیانت خۆت ئەزانی دانیشتووی لەگەڵم لەسەر هەمان مێز تەسەرفت لەگەڵم کردووە ئەزانی چۆن کەسێکم راستە لەوانەیە تۆزێ زانستم خۆش بوێت بەس کەسێکی وشکیش نیم بەجدی کاتێ لەگەڵ تۆ قسەم ئەکرد زۆر دڵخۆش بووم زۆر ئاسوودە بووم دەمێکە ئەو هەستەم رۆییوە ئێستا هەمان کەس نیم بەڵام هێشتا تۆم خۆش ئەوێت من کەسێک بووم راستت پێ بڵێم بە ناز گەورە بووم بەڵام وردە وردە نەما بەڵام کە تۆم ناسی هەستی بەرپرسیاریم بۆ دروست بوو وام لێ هات کە کەسێکم لە خۆم زیاتر خۆشبوێت دەستم کردە ئیشکردن کە سپاس بۆ خوا ئێستا هەم بۆخۆم ئیش ئەکەم هەم لە کۆمپانیایەکیش بەجدی خۆشەویستی هەموو شتێک ئەگۆرێت راستە تۆ ئەو هەستەت بە من نەدا بەڵام بێ ئەوەی قسە بکەیت وات لێکردم کە ببمە پیاو راستە هەڵەم هەبووە بەڵام لە کۆتاییا هەموومان مرۆڤین و شایەنی ئەوەین هەڵە بکەین کەسمان کامڵ نین گەر کامڵ بوینایە بەدوای کەسی تر نە ئەگەراین ئیتر ، شەیدا گیان من هەموو بونی خۆم کۆ کردووەتەوە و هاتوومە سەر رێت ئەگەر بروا و متمانەت بە منە کە من ئەبمە پیاوێک هەتا تەمەنت هەیە شانازیم پێوە بکەیت با ناوی خوای لێ بێنین و بهێڵە بێمە پێشەوە لەگەڵ ماڵەوەمان و داوات بکەم لە دایک و باوکت ئێمەی پیاو ئەوەی لە ئافرەتێکمان ئەوێ تەنیا ئەوەیە لە کاتە سەختەکان لە پشتمان بێت و بروای پێمان بێت ئیتر دوا بریار لای تۆیە و منیش چاوەڕێی تۆ ئەکەم .
-</p>
-<p>سوێن بێت ببمە باشترین هاوسەر بۆت و تۆش ببیتە جوانترین بووک کە تا ئێستا لەسەر ئەم زەویە بوبێت</p>
-</div>
- </div>
+
+
    <div class="container">
-    <h1>کلیک لە وێنەکە بکە</h1>
-    <div class="d-flex">
-    <img src="images/one.jpg" id="triggerImage" alt="Special Moment">
+    <h1>کلیک لە ڤیدیۆکە بکە جا وێنەکە </h1>
+    <div class="d-flex"  style="display: flex; height: 500px; " >
+    <img src="images/one.jpg" height="100%"   id="triggerImage" style="flex-grow: 3;" alt="Special Moment">
+
+
+            <video id="player2" playsinline style="width: 800px;" controls class="my-5">
+            <source src="./f.mp4" type="video/mp4">
+        </video>
     </div>
   </div>
   <!-- Modal -->
 <div class="modal" id="videoModal">
     <div class="modal-content">
         <span class="close" id="closeModal">&times;</span>
-        <!-- Plyr Video Player -->
-        <video id="player" playsinline controls>
+      <div class="d-flex">
+          <!-- Plyr Video Player -->
+        <video id="player" playsinline autoplay controls class="my-5">
             <source src="./Birthday/js/sh.mp4" type="video/mp4">
         </video>
+            <div class="audio-player">
+        <button id="play-pause" class="play-pause">▶️</button>
+        <div class="progress-container">
+            <div class="progress-bar-wrapper">
+                <div id="progress" class="progress"></div>
+            </div>
+        </div>
     </div>
+
+    <audio id="audio" src="final.mp3"></audio>
+
+        
+    </div>
+      </div>
+
 </div>
+      <p>سوێن بێت ببمە باشترین هاوسەر بۆت و تۆش ببیتە جوانترین بووک کە تا ئێستا لەسەر ئەم زەویە بوبێت</p>
+
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
@@ -340,6 +396,30 @@ document.addEventListener("mousemove", (event) => {
 <script>
     // Initialize Plyr
     const player = new Plyr('#player');
+    const player2 = new Plyr('#player2');
+const audio = document.getElementById('audio');
+const playPauseButton = document.getElementById('play-pause');
+const progress = document.getElementById('progress');
+
+// Set volume to maximum by default
+audio.volume = 1;
+
+// Play/Pause functionality
+playPauseButton.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        playPauseButton.textContent = '⏸️'; // Pause icon
+    } else {
+        audio.pause();
+        playPauseButton.textContent = '▶️'; // Play icon
+    }
+});
+
+// Update progress bar as audio plays
+audio.addEventListener('timeupdate', () => {
+    const progressPercent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+});
 
     // Get modal elements
     const modal = document.getElementById('videoModal');
@@ -356,6 +436,8 @@ document.addEventListener("mousemove", (event) => {
     closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
         player.pause(); // Pause video playback
+                player2.pause()
+
     });
 
     // Close modal when clicking outside the modal content
@@ -363,6 +445,7 @@ document.addEventListener("mousemove", (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
             player.pause(); // Pause video playback
+            player2.pause()
         }
     });
 </script>
