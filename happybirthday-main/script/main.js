@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
     confirmButtonText: "دەستپێبکە",
   }).then((result) => {
     if (result.isConfirmed) {
-      document.querySelector(".song").play();
+      document.querySelector(".video-background").play();
       animationTimeline();
     } else {
       animationTimeline();
