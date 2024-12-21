@@ -27,8 +27,7 @@
   <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:100,300' rel='stylesheet' type='text/css'>
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.1.0/less.min.js"></script>
-</head>
-<style>
+  <style>
     /* Spotlight effect */
   .spotlight-container {
     position: relative;
@@ -52,7 +51,32 @@
   mix-blend-mode: screen;
 
 }
+body {
+  background: url('../../images/humans/together/collage.jpg') no-repeat center center;
+  background-size: contain; /* Adjust this to fully display the image */
+  background-position: center center;
+  animation: move 5s linear forwards; /* Smooth downward movement */
+}
+#videoBackground {
+    position: fixed; /* Ensures it covers the viewport */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers the video */
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    object-fit: scale-down; /* Ensures the full video is visible */
+    z-index:999; /* Keeps the video behind other content */
+  background:black;
+}
 
+
+    #content {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      text-align: center;
+      color: white;
+    }
 @keyframes pulse {
   0% {
     scale: 0;
@@ -116,6 +140,14 @@
   animation: move 5s linear forwards; /* Smooth downward movement */
 }
 /* Animations */
+    @keyframes fpulse {
+      0%, 100% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
 @keyframes moveUp {
   0% {
     bottom: 100%;
@@ -212,7 +244,7 @@ html,body{
   width: 100%;
   height: 100%;
   margin: 0;
-  background:#131313;
+  background:black;
 }
 
 a{
@@ -237,11 +269,48 @@ body{
   background-position: center center;
   background-size: cover;
 }
+    #flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: 0;
+      display: none;
+      z-index: 1000;
+      animation: fpulse 1s ease-in-out infinite;
+           }
+           .bday {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #fff;
+  font-family: 'Josefin Sans';
+  font-weight: 300;
+  text-align: center;
+  z-index: 1;
+}
 </style>
+
+</head>
+<body>
+    <video id="video1" autoplay muted id="videoBackground">
+    <source src="../../videos/first-video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <h1 class="bday">
+    جوانترین و باشترین ئافرەتی دونیا
+    <a target="_self" rel="noopener noreferrer" href="../../final.html">شەیدا</a>
+  </h1>
+  <div id="content">
 
 <div>
 <audio id = "hbd" class="song" controls autoplay loop>
-        <source src="../../audio/ewin.mp3" type="audio/mpeg"></source>
+        <source src="../../audio/ewinn.m4a" type="audio/mpeg"></source>
      Your browser isn't invited for super fun audio time.
     </audio>
 </div>
@@ -270,14 +339,12 @@ body{
         <img class="image block" src="../../images/humans/together/us2.jpg">
         <h2 class="twenty-one block">3</h2>
       </div>
-      <h1 class="bday" style="position: absolute; left:200px;top:300px;">جوانترین و باشترین ئافرەتی دونیا
-        <a target="_self" rel="noopener noreferrer" href="../../final.html"> شەیدا </a>
-      </h1>
+
     </div>
-  </div>
+  </div>  <div id="flash"></div>
+
 </div>
 
-</html>
 
 <script>
 const sparksContainer = document.getElementById('sparks-container');
@@ -441,5 +508,60 @@ function HideOrShow(cur_div){
     current.style.visibility ="hidden";
   }
 }
+ // Function to show flash effect
+    function showFlash() {
+      const flash = document.getElementById('flash');
+      flash.style.opacity = 1;
+      flash.style.display = 'block'
+      setTimeout(() => {
+        flash.style.opacity = 0;
+              flash.style.display = 'none'
 
+      }, 5000); // Flash duration
+    }
+
+    // Transition to the second video after the first plays
+    setTimeout(() => {
+      // Trigger flash animation
+      showFlash();
+
+      // Wait for the flash animation to complete
+      setTimeout(() => {
+        // Remove the first video
+        document.body.innerHTML = '';
+
+        // Create the new video element
+        const video = document.createElement('video');
+        video.setAttribute('id', 'videoBackground');
+        video.setAttribute('autoplay', 'true');
+        video.setAttribute('muted', 'true');
+        video.src = "./shaida1.mp4";
+
+        // Append the new video to the body
+        document.body.appendChild(video);
+      }, 5000); // Match this delay to the flash duration
+            showFlash();
+
+      // Wait for the flash animation to complete
+      setTimeout(() => {
+        // Remove the first video
+        document.body.innerHTML = '';
+
+        // Create the new video element
+        const video = document.createElement('video');
+        video.setAttribute('id', 'videoBackground');
+        video.setAttribute('autoplay', 'true');
+        video.setAttribute('muted', 'true');
+        video.src = "./shaida2.mp4";
+
+        // Append the new video to the body
+        document.body.appendChild(video);
+      }, 50000); // Match this delay to the flash duration
+    }, 40000); // Time before transition (3 seconds in this example)
+    setTimeout(()=>{
+      window.location = "../../final.html"
+    },42000)
 </script>
+</body>
+
+</html>
